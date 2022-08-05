@@ -22,6 +22,7 @@ import {
 } from "@expo/vector-icons";
 import React, { useState, useEffect } from "react";
 import moment from "moment";
+import Images from "./utility/Images";
 
 if (
   Platform.OS === "android" &&
@@ -33,6 +34,44 @@ if (
 const App = () => {
   const [renderInput, setRenderInput] = useState(false);
   const [weather, setWeather] = useState([
+    {
+      wind_cdir: "SSE",
+      rh: 70,
+      pod: "n",
+      timestamp_utc: "2022-08-05T08:00:00",
+      pres: 945.5,
+      solar_rad: 0,
+      ozone: 293,
+      weather: {
+        icon: "c02n",
+        code: 802,
+        description: "Scattered clouds",
+      },
+      wind_gust_spd: 3.87,
+      timestamp_local: "2022-08-05T04:00:00",
+      snow_depth: 0,
+      clouds: 25,
+      ts: 1659686400,
+      wind_spd: 3.03,
+      pop: 0,
+      wind_cdir_full: "south-southeast",
+      slp: 1019.5,
+      dni: 0,
+      dewpt: 15.3,
+      snow: 0,
+      uv: 0,
+      wind_dir: 161,
+      clouds_hi: 100,
+      precip: 0,
+      vis: 23.392,
+      dhi: 0,
+      app_temp: 20.9,
+      datetime: "2022-08-05:08",
+      temp: 21,
+      ghi: 0,
+      clouds_mid: 3,
+      clouds_low: 0,
+    },
     {
       wind_cdir: "SSE",
       rh: 70,
@@ -129,14 +168,16 @@ const App = () => {
     return (
       <View>
         <Text style={styles.location}>{location}</Text>
-        <EvilIcons name="location" size={15} color="white" />
+        <EvilIcons name="location" size={15} color="black" />
 
         {weather.map((item, index) => {
           return (
-            <TouchableOpacity onPress={() => {
-              handleModal(true);
-              setModalData(item);
-            }}>
+            <TouchableOpacity
+              onPress={() => {
+                handleModal(true);
+                setModalData(item);
+              }}
+            >
               <View key={index} style={styles.weather}>
                 <View style={styles.tempView}>
                   <Text style={styles.temp}>{item.temp} </Text>
@@ -153,12 +194,12 @@ const App = () => {
                     <View style={styles.eachView}>
                       <FontAwesome5 name="wind" size={15} color="white" />
                       <Text style={styles.subhead}>Wind Speed </Text>
-                      <Text>{item.wind_spd}</Text>
+                      <Text style={styles.head}>{item.wind_spd}</Text>
                     </View>
                     <View style={styles.eachView}>
                       <Entypo name="direction" size={15} color="white" />
                       <Text style={styles.subhead}>Wind Dir </Text>
-                      <Text>{item.wind_cdir}</Text>
+                      <Text style={styles.head}>{item.wind_cdir}</Text>
                     </View>
                     <View style={styles.eachView}>
                       <MaterialCommunityIcons
@@ -167,7 +208,7 @@ const App = () => {
                         color="white"
                       />
                       <Text style={styles.subhead}>Pressure</Text>
-                      <Text>{item.pres}</Text>
+                      <Text style={styles.head}>{item.pres}</Text>
                     </View>
                   </View>
                 </View>
@@ -181,20 +222,118 @@ const App = () => {
 
   const renderModal = () => {
     return (
-      <Modal animatedtype="slide" visible={showModal} transparent={true}>
-        <View>
-            <Text>{modalData.datetime}</Text>
+      <Modal
+        animatedtype="slide"
+        visible={showModal}
+        transparent={true}
+        onRequestClose={() => {
+          setShowModal(false);
+        }}
+      >
+        <View style={styles.bigmodal}>
+          <View style={styles.modal}>
+            {/* <Text>{modalData.datetime}</Text> */}
+            <View style={styles.modalheader}>
+              <Text style={styles.modalHead2}>
+                {modalData.weather.description}
+              </Text>
+              <Text style={styles.modalHead}>{modalData.temp}</Text>
+              <Text style={styles.modalHead2}>{modalData.datetime}</Text>
+            </View>
+
+            <View style={styles.segment}>
+              <View style={styles.segmentleft}>
+                <Text style={styles.sidesegment}>Wind : </Text>
+              </View>
+
+              <View style={styles.windItemView}>
+                <View style={styles.eachWind}>
+                  <Text style={styles.windhead}>Current Dir.</Text>
+                  <Text style={styles.windvalue}>{modalData.wind_cdir}</Text>
+                </View>
+
+                <View style={styles.eachWind}>
+                  <Text style={styles.windhead}>Current Dir. Full</Text>
+                  <Text style={styles.windvalue}>
+                    {modalData.wind_cdir_full}
+                  </Text>
+                </View>
+                <View style={styles.eachWind}>
+                  <Text style={styles.windhead}>Wind Dir.</Text>
+                  <Text style={styles.windvalue}>{modalData.wind_dir}</Text>
+                </View>
+                <View style={styles.eachWind}>
+                  <Text style={styles.windhead}>Wind Speed</Text>
+                  <Text style={styles.windvalue}>{modalData.wind_spd}</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.segment}>
+              <View style={styles.segmentleft}>
+                <Text style={styles.sidesegment}>Atmosph. : </Text>
+              </View>
+
+              <View style={styles.windItemView}>
+                <View style={styles.eachWind}>
+                  <Text style={styles.windhead}>Pressure</Text>
+                  <Text style={styles.windvalue}>{modalData.pres}</Text>
+                </View>
+
+                <View style={styles.eachWind}>
+                  <Text style={styles.windhead}>Ozone</Text>
+                  <Text style={styles.windvalue}>{modalData.ozone}</Text>
+                </View>
+                <View style={styles.eachWind}>
+                  <Text style={styles.windhead}>Snow</Text>
+                  <Text style={styles.windvalue}>{modalData.snow}</Text>
+                </View>
+                <View style={styles.eachWind}>
+                  <Text style={styles.windhead}>Dew Point</Text>
+                  <Text style={styles.windvalue}>{modalData.dewpt}</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.segment}>
+              <View style={styles.segmentleft}>
+                <Text style={styles.sidesegment}>Clouds : </Text>
+              </View>
+
+              <View style={styles.windItemView}>
+                <View style={styles.eachWind}>
+                  <Text style={styles.windhead}>Current. Clouds</Text>
+                  <Text style={styles.windvalue}>{modalData.clouds}</Text>
+                </View>
+
+                <View style={styles.eachWind}>
+                  <Text style={styles.windhead}>Clouds Mid.</Text>
+                  <Text style={styles.windvalue}>{modalData.clouds_mid}</Text>
+                </View>
+                <View style={styles.eachWind}>
+                  <Text style={styles.windhead}>Clouds Low</Text>
+                  <Text style={styles.windvalue}>{modalData.clouds_low}</Text>
+                </View>
+                <View style={styles.eachWind}>
+                  <Text style={styles.windhead}>Clouns High</Text>
+                  <Text style={styles.windvalue}>{modalData.clouds_hi}</Text>
+                </View>
+              </View>
+            </View>
           </View>
+        </View>
       </Modal>
     );
   };
 
   return (
-    <View style={styles.container}>
+    <ImageBackground source={Images.weather} style={styles.container}>
       {renderBar()}
-      <ScrollView showsVerticalScrollIndicator={false}>{renderWeather()}</ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {renderWeather()}
+      </ScrollView>
       {renderModal()}
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -229,9 +368,9 @@ const styles = StyleSheet.create({
     color: "white",
   },
   location: {
-    color: "white",
+    color: "black",
     fontSize: 20,
-    fontWeight: "300",
+    fontWeight: "700",
     marginBottom: 10,
   },
   tempView: {
@@ -243,11 +382,11 @@ const styles = StyleSheet.create({
     fontWeight: "800",
   },
   weatherDesc: {
-    color: "white",
+    color: "#240135",
   },
   weather: {
-    backgroundColor: "rgba(192,192,192, 0.1)",
-    marginVertical: 15,
+    backgroundColor: "rgba(243, 169, 169, 0.5)",
+    marginVertical: 10,
     padding: 15,
     flexDirection: "row",
     alignItems: "center",
@@ -274,4 +413,63 @@ const styles = StyleSheet.create({
   favIcon: {
     marginTop: 15,
   },
+  head: {
+    color: "#240135",
+  },
+  modal: {
+    padding: 15,
+    flex: 1,
+    marginTop: 250,
+    backgroundColor: "white",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  modalheader: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalHead: {
+    fontSize: 100,
+    fontWeight: "600",
+    color: "rgba(36, 1, 53, 0.82)",
+  },
+  modalHead2: {
+    fontSize: 20,
+    fontWeight: "200",
+  },
+  segment: {
+    flexDirection: "row",
+    marginTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: "rgba(36, 1, 53, 0.82)",
+    padding: 10,
+  },
+  windItemView: {
+    flexDirection: "row",
+    width: "80%",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  segmentleft: {
+    width: "20%",
+  },
+  eachWind: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  windhead: {
+    fontSize: 11,
+    fontWeight: "300",
+    color: "rgba(36, 1, 53, 0.82)",
+  },
+  windvalue: {
+    fontSize: 11,
+  },
+  sidesegment: {
+    fontSize: 12,
+  },
+  bigmodal: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+  }
 });
