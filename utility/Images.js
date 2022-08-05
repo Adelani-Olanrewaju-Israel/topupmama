@@ -1,5 +1,5 @@
 
-const weather = require('../assets/images/weather.png');
+const weather = require('../assets/images/sun.png');
 
 export default {
     weather,
