@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
@@ -253,7 +252,11 @@ const Home = () => {
             >
               <View style={styles.weather}>
                 <View style={styles.tempView}>
-                  <Text style={styles.temp}>{item.temp} </Text>
+                <Text style={styles.temp}>{item.temp}° </Text>
+                  {/* <View style={styles.degree}>
+                    <Text style={styles.temp}>{item.temp} </Text>
+                    <Entypo name="circle" size={10} color="black" />
+                  </View> */}
                   <Text style={styles.weatherDesc}>
                     {item.weather.description}
                   </Text>
@@ -310,7 +313,7 @@ const Home = () => {
               <Text style={styles.modalHead2}>
                 {modalData.weather.description}
               </Text>
-              <Text style={styles.modalHead}>{modalData.temp}</Text>
+              <Text style={styles.modalHead}>{modalData.temp}° </Text>
               <Text style={styles.modalHead2}>{modalData.datetime}</Text>
             </View>
 
@@ -451,8 +454,8 @@ const styles = StyleSheet.create({
     width: "50%",
   },
   temp: {
-    fontSize: 80,
-    fontWeight: "800",
+    fontSize: 60,
+    fontWeight: "600",
   },
   weatherDesc: {
     color: "#240135",
@@ -544,5 +547,8 @@ const styles = StyleSheet.create({
   bigmodal: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  degree: {
+    flexDirection: "row",
   },
 });
